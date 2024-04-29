@@ -1,50 +1,42 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-string rev(string &str)
-{
-    string revs="";
-    for (int i = str.length() - 1; i >= 0; i--) {
-        revs += str[i];
-    }
-    return revs;
-
-}
 int main()
 {
-    ll n,m,k,t;
-    
+    int t;
     cin>>t;
-    while(t--)
+    while(t>0)
     {
-    cin>>n;
-    vector<ll> a(n);
-    for(int i=0;i<n;i++)cin>>a[i];
-// 1 3 5 5 2 
-// 1 3 4 3 2 
-// 3 3 5 5 2
-//2 2 2 2 2 2
-// a[i]-2*a[i-1]>0
-int i=0;
+        t--;
+        int n,k,x;
+        cin>>n>>k>>x;
+            vector<int> arr(n),prepos(n);
+        for(int i=0;i<n;i++)
+        {
+            cin>>arr[i];
 
-    for( i=0;i<=(n-3);i++)
-    {
-    if(a[i]>=0)
-    {
-        a[i+1]-=2*a[i];
-        a[i+2]-=a[i];
-        a[i]=0;
-    }
-    else break;
+        }
+        sort(arr.begin(),arr.end(),greater<int>());
+        prepos[0]=arr[0];
+        for(int i=1;i<n;i++)
+        {
+            prepos[i]=arr[i]+prepos[i-1];
+            // cout<<prepos[i-1]<<" ";
+        }
+        // cout<<prepos[n-1]<<endl;
+        int sum=0,summax=-1e6;
+        for(int i=1;i<=k;i++)
+        {
+     
+             if(x+i-1<n)sum+=(-prepos[x+i-1]+prepos[i-1])+prepos[n-1]-prepos[x+i-1];
+            else sum+=(-prepos[n-1]+prepos[i-1]);
 
-    }
-    if(i<=n-3)
-    cout<<"NO"<<endl;
-    else 
-    {
-        if(a[n-1]==0 & a[n-2]==0)cout<<"YES\n";
-        else cout<<"NO\n";
-    }
+            summax=max(summax,sum);
+            sum=0;
+
+        }
+        summax=max(-2*prepos[x-1]+prepos[n-1],summax);
+        cout<<summax<<endl;
 
     }
     return 0;

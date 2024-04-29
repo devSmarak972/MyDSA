@@ -1,46 +1,90 @@
+#include <iostream>
+#include <vector>
+#include <set>
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-string rev(string &str)
-{
-    string revs="";
-    for (int i = str.length() - 1; i >= 0; i--) {
-        revs += str[i];
-    }
-    return revs;
+int count_points(int n, const std::vector<int>& arr) {
+    int points = 0;
 
+    for (int k = 1; k <= sqrt(n); ++k) {
+        if (n % k == 0) {
+        int i=n/k;
+
+        for(int j=0;j<k;j++)
+        {
+            for(int m=0;m<n;m++)
+            {
+                int p;
+            for(p=1;p<k;p++)
+            {          
+
+            if(arr[j+p*i]%m!= arr[j+p*i-i]%m)
+            {
+
+                break;
+            }
+            }
+            if(p==k)
+                {
+                    points++;
+                    break;
+                }
+            }
+        }
+        i=k;
+        int m;
+        for(m=0;m<n;m++)
+        {
+        for(int j=0;j<k;j++)
+        {
+                int p;
+            for(p=1;p<k;p++)
+            {          
+
+            if(arr[j+p*i]%m!= arr[j+p*i-i]%m)
+            {
+
+                break;
+            }
+            }
+            if(p!=k)
+                {
+                    break;
+                }
+            }
+            if(j==k)
+            {
+                points++;
+                break;
+            }
+            
+            
+
+        }
+      
+        }
+        }
+
+    return points;
 }
-int main()
-{
-    ll n,m,k,t;
-    
+
+int main() {
+    int n = 6;
+    int t;
     cin>>t;
     while(t--)
     {
-    cin>>n;
-    string s;
-    cin>>s;
-    size_t pos = 0;
-    string substr="pie";
-    int count=0;
-    while ((pos = s.find(substr, pos)) != std::string::npos) {
-        ++count;
-        pos += substr.length();
+        cin>>n;
+        vector<int> arr(n);
+        for(int i=0;i<n;i++)
+        {
+            cin>>arr[i];
+        }
+    int result = count_points(n, arr);
+    std::cout <<result << std::endl;
     }
-    pos=0;
-    substr="map";
-    while ((pos = s.find(substr, pos)) != std::string::npos) {
-        ++count;
-        pos += substr.length();
-    }
-    substr="mapie";
-    pos=0;
-    while ((pos = s.find(substr, pos)) != std::string::npos) {
-        --count;
-        pos += substr.length();
-    }
-    cout<<count<<endl;
 
-    }
+
+
     return 0;
 }

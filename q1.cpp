@@ -1,43 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-string rev(string &str)
-{
-    string revs="";
-    for (int i = str.length() - 1; i >= 0; i--) {
-        revs += str[i];
-    }
-    return revs;
-
-}
 int main()
 {
-    ll n,m,k,t;
-    
+    int t;
     cin>>t;
+    unordered_map<int,bool> arr;
     while(t--)
     {
-    cin>>n>>m>>k;
-    vector<ll> b(n);
-    vector<ll> c(m);
-    for(int i=0;i<n;i++)cin>>b[i];
-    for(int i=0;i<m;i++)cin>>c[i];
-    sort(b.begin(),b.end());
-    sort(c.begin(),c.end());
-    int count=0;
-    for(int i=0;i<n;i++)
-    {
-    auto it = std::upper_bound(c.begin(), c.end(), k-b[i]);
-     if (it != c.begin())
-      {  --it;
-    
-    int index = std::distance(c.begin(), it);
-    count+=index+1;
-      }
+        arr.clear();
 
-    }
-    cout<<count<<endl;
-
+        int n;
+        cin>>n;
+        ll a,x,hi=1e9,lo=-1;
+        for(int i=0;i<n;i++)
+        {
+            cin>>a>>x;
+        if(a==1 && x>lo)
+         lo=x;
+        if(a==2 && x<hi)
+            hi=x;
+        if(a==3)
+         arr[x]=true;
+        }
+        int cnt=0;
+          for (const auto& pair : arr) {
+            if(pair.first>=lo&&pair.first<=hi)
+             cnt++;
+            }
+            int ans=(lo<=hi)?hi-lo+1-cnt:0;
+            cout<< ans<<endl;
     }
     return 0;
 }
