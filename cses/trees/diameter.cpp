@@ -3,7 +3,7 @@ using namespace std;
 vector<bool> visited;
 vector<vector<int>> AL;
 int n;
-pair<int,int> dfs(int node)
+pair<int,int> bfs(int node)
 {
     visited.assign(n+1,false);
     stack<pair<int,int>>s;
@@ -41,9 +41,9 @@ int main()
             AL[a].push_back(b);
             AL[b].push_back(a);
     }
-    pair<int, int> farthestfirst = dfs(1);
+    pair<int, int> farthestfirst = bfs(1);
     
-    pair<int, int> farthest = dfs( farthestfirst.first);
+    pair<int, int> farthest = bfs( farthestfirst.first);
     cout<<farthest.second<<endl;
 
     return 0;

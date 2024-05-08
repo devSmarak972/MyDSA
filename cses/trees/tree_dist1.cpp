@@ -3,33 +3,13 @@ using namespace std;
 vector<vector<int>> AL;
 int n;
 vector<int> distances;
-void dijkstra(int src){
-    distances.assign(n+1,-1);
-    vector<int> visited(n+1,false);
-    priority_queue<pair<int,int>,vector<pair<int,int>>, greater<int>> pq;
-    pq.push({0,src});
-    distances[src]=0;
-    visited[src]=true;
-    while(!pq.empty())
-    {
-        auto it=pq.top();
-        pq.pop();
-        for(auto v: AL[it.second])
-        {
-            if(distances[v]<distances[it.second]+1)
-            {
-                distances[v]=distances[it.second]+1;
-                pq.push({distances[v],v});
-            }
-        }
-        visited[it.second]=true;
-    }
-}
 vector<int> firstMax;
 vector<int> secondMax;
 vector<int> c;
 void dfs(int u,int p)
 {
+    firstMax[u] = 0;
+	secondMax[u] = 0;
     for(auto v:AL[u])
     {
         if(v==p)continue;
@@ -51,19 +31,19 @@ void dfs2(int u,int p)
     for(auto v:AL[u])
     {
         if(v==p)continue;
-        if(c[u]==v)
+        if(c[u]==v)// the chosen child iwth longest path
         {
-        if(firstMax[v]<secondMax[u]+1)
+        if(firstMax[v]<secondMax[u]+1)//found a path through parternt that is longer if we go up one step
         {
-            secondMax[v]=firstMax[u];
-            firstMax[v]=secondMax[v]+1;
+            secondMax[v]=firstMax[v];//shouldnt it be -1? this is the path through v longest from u
+            firstMax[v]=secondMax[u]+1;
             c[v]=u;
         }else {
-				secondMax[v] = max(secondMax[v], secondMax[u] + 1);
+				secondMax[v] = max(secondMax[v], secondMax[u] + 1);// already the chosen path and also the largest, must see if the second largest is from the one chosen by parent or differnt
 			}
 
         }else {
-			secondMax[v] = firstMax[v];
+			secondMax[v] = firstMax[v];// this is clealry not the chosen one. so the path down his tree is the scond largest from it
 			firstMax[v] = firstMax[u] + 1;
 			c[v] = u;
 		}
@@ -86,6 +66,12 @@ int main()
     firstMax.assign(n+1,0);
     secondMax.assign(n+1,0);
     c.assign(n+1,-1);
+    dfs(1,-1);
+    dfs2(1,-1);
+    for(int i=1;i<=n;i++)
+    {
+        cout<<firstMax[i]<<" ";
+    }
     return 0;
 
 }
